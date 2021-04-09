@@ -4,7 +4,7 @@ import pandas as pd
 
 class Database(object):
 
-    DB_LOCATION = './application.db'
+    DB_LOCATION = "./application.db"
 
     create_table = """
                     CREATE TABLE users (
@@ -46,20 +46,22 @@ class Database(object):
 
     def execute(self, data):
         self.cur.execute(
-            """INSERT OR IGNORE INTO users VALUES (NULL, ?, ?, ?, ?, ?)""", data,
+            """INSERT OR IGNORE INTO users VALUES (NULL, ?, ?, ?, ?, ?)""",
+            data,
         )
         self.conn.commit()
 
     def execute_many(self, data):
         self.cur.executemany(
-            """INSERT OR IGNORE INTO users VALUES (NULL, ?, ?, ?, ?, ?)""", data,
+            """INSERT OR IGNORE INTO users VALUES (NULL, ?, ?, ?, ?, ?)""",
+            data,
         )
         self.conn.commit()
 
     def delete_user(self, client_member_id: int):
         try:
             self.cur.execute(
-                'DELETE FROM users WHERE client_member_id = {}'.format(client_member_id)
+                "DELETE FROM users WHERE client_member_id = {}".format(client_member_id)
             )
             self.conn.commit()
             return True
@@ -75,10 +77,10 @@ class Database(object):
         account_id: int,
     ):
         self.cur.execute(
-            'SELECT * FROM users WHERE client_member_id = {}'.format(client_member_id)
+            "SELECT * FROM users WHERE client_member_id = {}".format(client_member_id)
         )
         if not self.cur.fetchall():
-            return {'status': "user doesn't exist use POST /member endpoint"}
+            return {"status": "user doesn't exist use POST /member endpoint"}
         self.cur.execute(
             f'UPDATE users SET first_name="{first_name}", last_name="{last_name}", phone_number="{phone_number}", account_id={account_id} WHERE client_member_id={client_member_id}'
         )
@@ -100,31 +102,31 @@ class Database(object):
 
     def get_user(self, **kwargs):
         # Get values that exist
-        user_id = kwargs.get('user_id', None)
-        phone_number = kwargs.get('phone_number', None)
-        client_member_id = kwargs.get('client_member_id', None)
-        account_id = kwargs.get('account_id', None)
+        user_id = kwargs.get("user_id", None)
+        phone_number = kwargs.get("phone_number", None)
+        client_member_id = kwargs.get("client_member_id", None)
+        account_id = kwargs.get("account_id", None)
 
-        sql_stem = 'SELECT * FROM users where '
+        sql_stem = "SELECT * FROM users where "
 
         if user_id:
-            sql = sql_stem + 'id =' + str(user_id)
+            sql = sql_stem + "id =" + str(user_id)
         if phone_number:
-            sql = sql_stem + 'phone_number = ' + str(phone_number)
+            sql = sql_stem + "phone_number = " + str(phone_number)
         if client_member_id:
-            sql = sql_stem + 'client_member_id = ' + str(client_member_id)
+            sql = sql_stem + "client_member_id = " + str(client_member_id)
         if account_id:
-            sql = sql_stem + 'account_id = ' + str(account_id)
+            sql = sql_stem + "account_id = " + str(account_id)
 
         self.cur.execute(sql)
-        users = {'users': []}
+        users = {"users": []}
         for user in self.cur.fetchall():
             data = {}
-            data['id'] = user[0]
-            data['first_name'] = user[1]
-            data['last_name'] = user[2]
-            data['phone_number'] = user[3]
-            data['client_member_id'] = user[4]
-            data['account_id'] = user[5]
-            users['users'].append(data)
+            data["id"] = user[0]
+            data["first_name"] = user[1]
+            data["last_name"] = user[2]
+            data["phone_number"] = user[3]
+            data["client_member_id"] = user[4]
+            data["account_id"] = user[5]
+            users["users"].append(data)
         return users

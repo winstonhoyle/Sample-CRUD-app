@@ -9,7 +9,7 @@ database = Database()
 api = APIRouter()
 
 
-@api.get('/member', description='Returns members, only use ONE parameter at a time')
+@api.get("/member", description="Returns members, only use ONE parameter at a time")
 async def members(
     user_id: Optional[str] = None,
     phone_number: Optional[str] = None,
@@ -26,14 +26,16 @@ async def members(
     return data
 
 
-@api.delete('/member', description='Deletes a user')
+@api.delete("/member", description="Deletes a user")
 async def delete_member(client_member_id: int = 0):
     if database.delete_user(client_member_id=client_member_id):
-        return {'status': 'user was deleted'}
-    return {'status': 'something went wrong'}
+        return {"status": "user was deleted"}
+    return {"status": "something went wrong"}
 
 
-@api.put('/member', description='Updates user information, client_member_id is required')
+@api.put(
+    "/member", description="Updates user information, client_member_id is required"
+)
 async def update_member(
     first_name: str = "",
     last_name: str = "",
@@ -52,7 +54,7 @@ async def update_member(
     return data
 
 
-@api.post('/member', description='Adds a user, all fields required')
+@api.post("/member", description="Adds a user, all fields required")
 async def add_member(
     first_name: str = "",
     last_name: str = "",
@@ -70,11 +72,11 @@ async def add_member(
     return added_user
 
 
-@api.post('/upload')
+@api.post("/upload")
 async def upload_csv(file: UploadFile = File(...)):
     df = pd.read_csv(file.file)
 
     if database.load_data(df):
-        return {'status': 'data loaded sucessfully'}
+        return {"status": "data loaded sucessfully"}
     else:
-        return {'status': 'something went wrong'}
+        return {"status": "something went wrong"}
