@@ -1,15 +1,14 @@
 # Sample CRUD App
-
-This is a sample CRUD REST application with file upload using Python
+This is a sample Python CRUD REST application with user management and file upload capabilities. 
 
 ## Requires
 * Windows (Other OS are not supported)
 * Python (3.7+)
 
 ## Installation
-Create a virtualenv then run
+Create a virtualenv download the requirements running this command:
 ```bash
-pip install -r requirements.txt
+> python -m pip install -r requirements.txt
 ```
 
 ## Usage
